@@ -1,0 +1,9 @@
+Paletas de Cores!
+
+Verde-#00A450
+Azul-#1B75BA
+Amarelo-#FAAE3F
+Vermelho-#ED4036
+Verde-#C3D000
+Laranja-#EF5A29
+Azul-Marinho-#005186
