@@ -74,9 +74,9 @@ def graphs():
         lon='Long',
         color='Volume_categoria',
         color_discrete_map= {
-            '1': '#FF4B4B',
+            '1': '#FFDEDE',
             '3': '#FF8585',
-            '5': '#FFDEDE',
+            '5': '#FF4B4B',
         },
         category_orders={
             'Volume_categoria': ['1', '3', '5']
