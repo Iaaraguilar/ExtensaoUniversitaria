@@ -60,21 +60,40 @@ def home():
     st.markdown('---')
 
 def graphs():
-    if len(df_selecao) > 3110:
-        df_plot = df_selecao.sample(310, random_state=42)
-        st.warning("Mostrando uma amostra de 310 pontos para melhor desempenho.")
+    if len(df_selecao) > 300:
+        df_plot = df_selecao.sample(300, random_state=42)
+        st.warning("Mostrando uma amostra de 300 pontos para melhor desempenho.")
     else:
         df_plot = df_selecao
+
+    df_plot['Volume_categoria'] = df_plot['Volume_int'].astype(str)
 
     fig_map = px.scatter_map(
         df_plot,
         lat='Lat',
         lon='Long',
-        color='Volume_int',
+        color='Volume_categoria',
+        color_discrete_map= {
+            '1': '#FF4B4B',
+            '3': '#FF8585',
+            '5': '#FFDEDE',
+        },
+        category_orders={
+            'Volume_categoria': ['1', '3', '5']
+        },
         size='Volume_int',
         hover_name='Endereço',
+        hover_data=['Lat', 'Long', 'Volume_categoria'],
         zoom=10,
-        height=600
+        height=700,
+        title='Mapeamento de Pontos Viciados de Lixo',
+        subtitle='Na Cidade de São Paulo',
+        labels={
+            'Lat': 'Latitude',
+            'Long': 'Longitude',
+            'Volume_categoria': 'Volume (m³)',
+        },
+        map_style='carto-darkmatter'
     )
 
     # fig_map.update_layout(mapbox_style='open-street-map')
@@ -84,9 +103,14 @@ def graphs():
         df_selecao.groupby(['Subprefeitura', 'Ano'])['Volume_int'].sum().reset_index(),
         x='Ano',
         y='Volume_int',
+        height=700,
         barmode='group',
         color='Subprefeitura',
-        title='Volume Total de Lixo por Subprefeitura'
+        title='Volume Total de Lixo',
+        subtitle='Por Subprefeitura',
+        labels={
+            'Volume_int': 'Volume (m³)',
+        }
     )
 
     st.plotly_chart(fig_map, use_container_width=True)
