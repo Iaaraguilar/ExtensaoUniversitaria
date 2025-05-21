@@ -22,7 +22,7 @@
 .referencias,
 .rodape
 .animado {
-  animation: fadeIn 1s ease forwards;
+  animation: fadeIn 0.7s ease forwards;
   opacity: 0; 
   animation-fill-mode: forwards;
 }
