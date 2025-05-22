@@ -6,6 +6,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', layout='wide')
 
 df = pd.read_excel('planilha_tratada_oficialmente_oficial.xlsx')
+df_residuo = pd.read_excel('residuos_unificado.xlsx')
 
 
 with st.sidebar:
@@ -16,27 +17,8 @@ with st.sidebar:
         default_index=0
     )
 
-    # Filtro de Ano
-    ano = st.sidebar.multiselect(
-        'Ano',
-        options=df['Ano'].unique(),
-        default=df['Ano'].unique(),
-        key='ano'
-    )
-
-    # Filtro de zona
-    zona = st.sidebar.multiselect(
-        'Zona',
-        options=df['Zona'].unique(),
-        default=df['Zona'].unique(),
-        key='zona'
-    )
-
-df_selecao = df.query('Ano in @ano and Zona in @zona')
-
-df_plot = df.sample(300, random_state=45)
-
-def home():
+    
+def pontos():
     st.title('🗑️ Pontos Viciados de Lixo')
 
     volume_total = df['Volume_int'].sum()
@@ -57,14 +39,27 @@ def home():
     with metrica3:
         st.metric('🏭 Empresa mais Contratada', value=empresa_mais_contratada)
 
-def graphs():
-    st.warning("Mapa: mostrando uma amostra de 300 pontos para melhor desempenho.")
+
+    # Filtro de Ano
+    with st.sidebar:
+        ano = st.sidebar.multiselect(
+        'Ano',
+        options=df['Ano'].unique(),
+        default=df['Ano'].unique(),
+        key='ano'
+        )
+
+
+    df_plot = df.sample(300, random_state=45)
+    df_ano = df_plot.query('Ano in @ano')
+
+    
 
     df_plot['Volume_categoria'] = df_plot['Volume_int'].astype(str)
-    df_selecao['Volume_categoria'] = df_selecao['Volume_int'].astype(str)
+    df_ano['Volume_categoria'] = df_ano['Volume_int'].astype(str)
 
     fig_map = px.scatter_map(
-        df_plot,
+        df_ano,
         lat='Lat',
         lon='Long',
         color='Volume_categoria',
@@ -93,21 +88,34 @@ def graphs():
         animation_frame='Zona'
     )
 
-    df_filtrado = df_selecao[df_selecao['Ano'].isin([2019, 2020, 2021])]
+    with st.sidebar:
+         # Filtro de zona
+        zona = st.sidebar.multiselect(
+        'Zona',
+        options=df['Zona'].unique(),
+        default=df['Zona'].unique(),
+        key='zona'
+        )
 
-    # df_filtrado['Zona'] = df_filtrado['Subprefeitura']
+    st.warning("Mapa: mostrando uma amostra de 300 pontos para melhor desempenho.")
+
+    df_ano_zona = df.query('Ano in @ano and Zona in @zona')
+    df_ano_zona['Volume_categoria'] = df_ano_zona['Volume_int'].astype(str)
+
+    df_filtrado = df_ano_zona[df_ano_zona['Ano'].isin([2019, 2020, 2021])]
 
     fig_bar = px.bar(
-        df_filtrado.groupby('Subprefeitura')['Volume_int'].sum().reset_index(),
-        x='Subprefeitura',
-        y='Volume_int',
+        df_filtrado.groupby(['Subprefeitura', 'Zona'])['Volume_int'].sum().reset_index(),
+        x='Volume_int',
+        y='Subprefeitura',
+        color='Zona',
         height=700,
         title='Volume Total de Lixo',
         subtitle='Por Subprefeitura',
         labels={
             'Volume_int': 'Volume (m³)'
         },
-        color_discrete_sequence=['#FF4B4B']
+        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD', '#FFCACA', '#FF7F7F']
     )
 
     fig_pie = px.pie(
@@ -135,35 +143,77 @@ def graphs():
 
     fig_hist = px.histogram(
         df_filtrado,
-        x='Subprefeitura',
+        y='Subprefeitura',
         title='Pontos Viciados por Subprefeitura',
-        height=600,
+        color='Zona',
+        height=700,
         labels= {'count': "Pontos Viciados"},
-        color_discrete_sequence=['#FF4B4B']
+        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD', '#FFCACA', '#FF7F7F']
     )
     
-    fig_bar.update_layout(xaxis={'categoryorder': 'total descending'})
-    fig_pie.update_layout(xaxis={'categoryorder': 'total descending'}, yaxis={"dtick":1})
-    fig_hist.update_layout(xaxis={'categoryorder': 'total descending'})
+    fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
+    fig_pie.update_layout(yaxis={'categoryorder': 'total ascending'})
+    fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
     st.plotly_chart(fig_pie, use_container_width=True)
     st.plotly_chart(fig_hist, use_container_width=True)
 
-# def residuos():
-    # fig_bar = px.bar(
-    #     x=,
-    #     y=
-    #     height=700,
-    #     title='Quantidade de Lixo,
-    #     subtitle='Por Tipo',
-    #     labels=
-    #     color_discrete_sequence=['#FF4B4B']
-    # )
+def residuos():
+
+    
+    # quantidade total
+    # maior tipo
+    # maior ano
+
+
+
+
+    with st.sidebar:
+        ano = st.sidebar.multiselect(
+        'ano',
+        options=df_residuo['ano'].unique(),
+        default=df_residuo['ano'].unique(),
+        key='ano'
+        )
+
+    df_residuos = df_residuo.query('ano in @ano')
+
+    fig_bar_residuos = px.bar(
+        df_residuos.groupby(['tipo', 'ano'])['quantidade'].sum().reset_index(),
+        x='quantidade',
+        y='tipo',
+        color='ano',
+        height=900,
+        title='Quantidade de Lixo',
+        subtitle='Por Tipo',
+        labels={
+            'quantidade': 'Quantidade (t)',
+            'tipo': 'Tipo de Residuo'
+        },
+        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD']
+    )
+
+    fig_line_residuos = px.line(
+        df_residuos.groupby(['tipo', 'mes', 'ano'])['quantidade'].sum().reset_index(),
+        x=['mes', 'ano'],
+        y='quantidade',
+        color='ano',
+        title='Quantidade de Lixo por Tipo',
+        subtitle='Mensalmente'
+    )
+
+    
+
+    fig_bar_residuos.update_layout(yaxis={'categoryorder': 'total ascending'})
+
+    st.plotly_chart(fig_bar_residuos, use_container_width=True)
+    st.plotly_chart(fig_line_residuos, use_container_width=True)
 
 
 def saiba():
+
     with open("style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -212,12 +262,10 @@ def saiba():
 
 def side_bar():
     if selecionado == 'Pontos Viciados de Lixo':
-        home()
-        graphs()
+        pontos()
 
     elif selecionado == 'Tipos de Resíduos de Lixo':
-        pass
-        # residuos()
+        residuos()
 
     elif selecionado == 'Saiba Mais':
         saiba()
