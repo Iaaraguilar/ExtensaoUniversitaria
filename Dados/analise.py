@@ -7,6 +7,7 @@ st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', la
 
 df = pd.read_excel('planilha_tratada_oficialmente_oficial.xlsx')
 
+
 with st.sidebar:
     # Menu
     selecionado = option_menu(
@@ -33,6 +34,8 @@ with st.sidebar:
 
 df_selecao = df.query('Ano in @ano and Zona in @zona')
 
+df_plot = df.sample(300, random_state=45)
+
 def home():
     st.title('🗑️ Pontos Viciados de Lixo')
 
@@ -50,18 +53,12 @@ def home():
     with metrica1:
         st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total)} m³')
     with metrica2:
-        st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos} - {dic_subprefeitura_count['SÉ']} pontos')
+        st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
         st.metric('🏭 Empresa mais Contratada', value=empresa_mais_contratada)
 
-    st.markdown('---')
-
 def graphs():
-    if len(df_selecao) > 300:
-        df_plot = df_selecao.sample(300, random_state=42)
-        st.warning("Mapa: mostrando uma amostra de 300 pontos para melhor desempenho.")
-    else:
-        df_plot = df_selecao
+    st.warning("Mapa: mostrando uma amostra de 300 pontos para melhor desempenho.")
 
     df_plot['Volume_categoria'] = df_plot['Volume_int'].astype(str)
     df_selecao['Volume_categoria'] = df_selecao['Volume_int'].astype(str)
@@ -77,13 +74,14 @@ def graphs():
             '5': '#FF4B4B',
         },
         category_orders={
-            'Volume_categoria': ['1', '3', '5']
+            'Volume_categoria': ['1', '3', '5'],
+            'Ano': [2019, 2020, 2021]
         },
         size='Volume_int',
         hover_name='Endereço',
         hover_data=['Lat', 'Long', 'Volume_categoria'],
-        zoom=3,
-        height=700,
+        zoom=9,
+        height=600,
         title='Mapeamento de Pontos Viciados de Lixo',
         subtitle='Na Cidade de São Paulo',
         labels={
@@ -91,52 +89,79 @@ def graphs():
             'Long': 'Longitude',
             'Volume_categoria': 'Volume (m³)',
         },
-        map_style='carto-darkmatter'
+        map_style='dark',
+        animation_frame='Zona'
     )
 
     df_filtrado = df_selecao[df_selecao['Ano'].isin([2019, 2020, 2021])]
 
-    df_filtrado['Zona'] = df_filtrado['Subprefeitura']
+    # df_filtrado['Zona'] = df_filtrado['Subprefeitura']
 
     fig_bar = px.bar(
         df_filtrado.groupby('Subprefeitura')['Volume_int'].sum().reset_index(),
         x='Subprefeitura',
         y='Volume_int',
         height=700,
-        color='Subprefeitura',
         title='Volume Total de Lixo',
         subtitle='Por Subprefeitura',
         labels={
             'Volume_int': 'Volume (m³)'
         },
-        color_discrete_sequence=['#FF4B4B', '#E3B23C', '#EDEBD7', '#03CEA4']
-    )
-
-    fig_area = px.bar(
-        df_filtrado.groupby('Subprefeitura')['Volume_int'].count().reset_index(),
-        x='Subprefeitura',
-        y='Volume_int',
-        height=500,
-        color='Subprefeitura',
-        title='Pontos Viciados de Lixo',
-        subtitle='Por Subprefeitura'
+        color_discrete_sequence=['#FF4B4B']
     )
 
     fig_pie = px.pie(
         df_filtrado, 
         values="Volume_int", 
         names="Contratada", 
-        title="Volume total por empresa por volume(m³)", 
+        title="Volume Total",
+        subtitle="Por Empresa",
         labels= {'Volume_int': "Volume (m³)", "Contratada": "Empresa"},
-        color= 'Contratada'
-        )
+        color= 'Contratada',
+        color_discrete_map={
+            'SUSTENTARE': '#FF6B6B',
+            'SOMA': '#FF8C8C',
+            'INOVA': '#FF5E5E',
+            'TREVO': '#FFA3A3',
+            'CORPUS': '#FF7070',
+            'ECOSS': '#FF4B4B',
+            'LOCAT SP': '#FF9999',
+            'LIMPA SP': '#FFBDBD',
+            'CONSÓRCIO SCK': '#FF7F7F',
+            'ECOSAMPA': '#FFD6D6',
+            'LOCATSP': '#FFCACA'
+        }
+    )
 
-    # pontos / subprefeitura
+    fig_hist = px.histogram(
+        df_filtrado,
+        x='Subprefeitura',
+        title='Pontos Viciados por Subprefeitura',
+        height=600,
+        labels= {'count': "Pontos Viciados"},
+        color_discrete_sequence=['#FF4B4B']
+    )
+    
+    fig_bar.update_layout(xaxis={'categoryorder': 'total descending'})
+    fig_pie.update_layout(xaxis={'categoryorder': 'total descending'}, yaxis={"dtick":1})
+    fig_hist.update_layout(xaxis={'categoryorder': 'total descending'})
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
-    st.plotly_chart(fig_area, use_container_width=True)
     st.plotly_chart(fig_pie, use_container_width=True)
+    st.plotly_chart(fig_hist, use_container_width=True)
+
+# def residuos():
+    # fig_bar = px.bar(
+    #     x=,
+    #     y=
+    #     height=700,
+    #     title='Quantidade de Lixo,
+    #     subtitle='Por Tipo',
+    #     labels=
+    #     color_discrete_sequence=['#FF4B4B']
+    # )
+
 
 def saiba():
     with open("style.css") as f:
@@ -191,7 +216,8 @@ def side_bar():
         graphs()
 
     elif selecionado == 'Tipos de Resíduos de Lixo':
-        graphs()
+        pass
+        # residuos()
 
     elif selecionado == 'Saiba Mais':
         saiba()
