@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+# import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
+
 
 st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', layout='wide')
 
@@ -33,7 +35,7 @@ def pontos():
     metrica1, metrica2, metrica3 = st.columns(3)
 
     with metrica1:
-        st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total)} m³')
+        st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total) // 1000} Km³')
     with metrica2:
         st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
@@ -161,14 +163,24 @@ def pontos():
     st.plotly_chart(fig_hist, use_container_width=True)
 
 def residuos():
+    st.title('☣️ Tipos de resíduos de lixo')
 
-    
-    # quantidade total
-    # maior tipo
-    # maior ano
+    volume_total = df_residuo['quantidade'].sum()
 
+    tipo_counts = df_residuo['tipo'].value_counts()
+    maiores_tipos = tipo_counts.idxmax()
 
+    ano_counts = df_residuo['ano'].value_counts()
+    ano_maior = ano_counts.idxmax()
 
+    metrica1, metrica2, metrica3 = st.columns(3)
+
+    with metrica1:
+        st.metric('⚖️ Quantidade Total (toneladas)', value=f'{int(volume_total) // 1000000} Mt')
+    with metrica2:
+        st.metric('🛢️ Maior tipo de lixo', value=maiores_tipos)
+    with metrica3:
+        st.metric('📅 Ano com mais resíduos', value=ano_maior)
 
     with st.sidebar:
         ano = st.sidebar.multiselect(
@@ -179,6 +191,8 @@ def residuos():
         )
 
     df_residuos = df_residuo.query('ano in @ano')
+
+    df_residuos['ano'] = df_residuos['ano'].apply(str)
 
     fig_bar_residuos = px.bar(
         df_residuos.groupby(['tipo', 'ano'])['quantidade'].sum().reset_index(),
@@ -192,19 +206,30 @@ def residuos():
             'quantidade': 'Quantidade (t)',
             'tipo': 'Tipo de Residuo'
         },
-        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD']
+        color_discrete_map={
+            '2019':'#FF4B4B', 
+            '2020':'#FF6B6B',
+            '2021':'#FFBDBD'
+        }
     )
+    
+    ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+
+    df_residuos['mes'] = pd.Categorical(df_residuos['mes'], categories=ordem_meses, ordered=True)
 
     fig_line_residuos = px.line(
-        df_residuos.groupby(['tipo', 'mes', 'ano'])['quantidade'].sum().reset_index(),
-        x=['mes', 'ano'],
+        df_residuos.groupby(['ano', 'mes'])['quantidade'].sum().reset_index(),
+        x='mes',
         y='quantidade',
         color='ano',
-        title='Quantidade de Lixo por Tipo',
-        subtitle='Mensalmente'
+        title='Quantidade de Lixo',
+        subtitle='Por Mês',
+        color_discrete_map={
+            '2019':'#FF4B4B', 
+            '2020':'#FF6B6B',
+            '2021':'#FFBDBD'
+        }
     )
-
-    
 
     fig_bar_residuos.update_layout(yaxis={'categoryorder': 'total ascending'})
 
