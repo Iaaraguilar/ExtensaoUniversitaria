@@ -124,7 +124,7 @@ def pontos():
         df_filtrado, 
         values="Volume_int", 
         names="Contratada", 
-        title="Volume Total",
+        title="Volume Total de Lixo",
         subtitle="Por Empresa",
         labels= {'Volume_int': "Volume (m³)", "Contratada": "Empresa"},
         color= 'Contratada',
@@ -146,7 +146,8 @@ def pontos():
     fig_hist = px.histogram(
         df_filtrado,
         y='Subprefeitura',
-        title='Pontos Viciados por Subprefeitura',
+        title='Pontos Viciados',
+        subtitle='Por Subprefeitura',
         color='Zona',
         height=700,
         labels= {'count': "Pontos Viciados"},
