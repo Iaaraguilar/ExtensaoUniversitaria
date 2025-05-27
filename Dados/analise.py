@@ -214,7 +214,7 @@ def residuos():
 
 def saiba():
 
-    with open("style.css") as f:
+    with open("Dados/style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     # Título e subtítulo
