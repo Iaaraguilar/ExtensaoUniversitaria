@@ -7,8 +7,8 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', layout='wide')
 
-df = pd.read_excel('planilha_tratada_oficialmente_oficial.xlsx')
-df_residuo = pd.read_excel('residuos_unificado.xlsx')
+df = pd.read_excel('Dados/planilha_tratada_oficialmente_oficial.xlsx')
+df_residuo = pd.read_excel('Dados/residuos_unificado.xlsx')
 
 
 with st.sidebar:
