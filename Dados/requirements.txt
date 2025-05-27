@@ -5,3 +5,4 @@ yfinance
 pandas-datareader
 prophet
 streamlit_option_menu
+planilha_tratada_oficialmente_oficial.xlsx
