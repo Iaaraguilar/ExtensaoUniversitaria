@@ -65,11 +65,7 @@ def pontos():
         lat='Lat',
         lon='Long',
         color='Volume_categoria',
-        color_discrete_map= {
-            '1': '#FFDEDE',
-            '3': '#FF8585',
-            '5': '#FF4B4B',
-        },
+        
         category_orders={
             'Volume_categoria': ['1', '3', '5'],
             'Ano': [2019, 2020, 2021]
@@ -117,7 +113,6 @@ def pontos():
         labels={
             'Volume_int': 'Volume (m³)'
         },
-        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD', '#FFCACA', '#FF7F7F']
     )
 
     fig_pie = px.pie(
@@ -128,19 +123,7 @@ def pontos():
         subtitle="Por Empresa",
         labels= {'Volume_int': "Volume (m³)", "Contratada": "Empresa"},
         color= 'Contratada',
-        color_discrete_map={
-            'SUSTENTARE': '#FF6B6B',
-            'SOMA': '#FF8C8C',
-            'INOVA': '#FF5E5E',
-            'TREVO': '#FFA3A3',
-            'CORPUS': '#FF7070',
-            'ECOSS': '#FF4B4B',
-            'LOCAT SP': '#FF9999',
-            'LIMPA SP': '#FFBDBD',
-            'CONSÓRCIO SCK': '#FF7F7F',
-            'ECOSAMPA': '#FFD6D6',
-            'LOCATSP': '#FFCACA'
-        }
+        
     )
 
     fig_hist = px.histogram(
@@ -151,7 +134,6 @@ def pontos():
         color='Zona',
         height=700,
         labels= {'count': "Pontos Viciados"},
-        color_discrete_sequence=['#FF4B4B', '#FF6B6B', '#FFBDBD', '#FFCACA', '#FF7F7F']
     )
     
     fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
@@ -207,11 +189,7 @@ def residuos():
             'quantidade': 'Quantidade (t)',
             'tipo': 'Tipo de Residuo'
         },
-        color_discrete_map={
-            '2019':'#FF4B4B', 
-            '2020':'#FF6B6B',
-            '2021':'#FFBDBD'
-        }
+        
     )
     
     ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
@@ -225,11 +203,7 @@ def residuos():
         color='ano',
         title='Quantidade de Lixo',
         subtitle='Por Mês',
-        color_discrete_map={
-            '2019':'#FF4B4B', 
-            '2020':'#FF6B6B',
-            '2021':'#FFBDBD'
-        }
+        
     )
 
     fig_bar_residuos.update_layout(yaxis={'categoryorder': 'total ascending'})
