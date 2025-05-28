@@ -134,7 +134,8 @@ def pontos():
         labels={
             'Volume_int': 'Volume (m³)'
         },
-        text='Volume_int'
+        text='Volume_int',
+        text_auto=True
     )
 
     fig_pie = px.pie(
