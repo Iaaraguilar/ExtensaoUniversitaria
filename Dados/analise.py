@@ -34,9 +34,11 @@ def pontos():
 
     total_pontos = df['Volume_int'].count()
 
-    zona_com_mais_ponto = df.groupby('Zona')['Volume_int'].count()
+    list_zona_com_mais_ponto = df.groupby('Zona')['Volume_int'].count().sort_values(ascending=False)
+    zona_com_mais_ponto = list_zona_com_mais_ponto[0]
 
-    zona_com_mais_volume = df.groupby('Zona')['Volume_int'].sum()
+    list_zona_com_mais_volume = df.groupby('Zona')['Volume_int'].sum().sort_values(ascending=False)
+    zona_com_mais_volume = list_zona_com_mais_volume[0]
 
     metrica1, metrica2, metrica3, metrica4, metrica5, metrica6 = st.columns(6)
 
@@ -49,9 +51,9 @@ def pontos():
     with metrica4:
         st.metric('🚏 Total de Pontos', value=total_pontos)
     with metrica5:
-        st.metric('🚏 Total de Pontos', value=zona_com_mais_ponto)
+        st.metric('📍 Zona com Mais Ponto', value=zona_com_mais_ponto)
     with metrica6:
-        st.metric('🚏 Total de Pontos', value=zona_com_mais_volume)
+        st.metric('🗺️ Zona com Mais Volume', value=zona_com_mais_volume)
 
 
     # Filtro de Ano
