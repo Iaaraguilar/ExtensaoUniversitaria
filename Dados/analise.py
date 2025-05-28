@@ -154,7 +154,8 @@ def pontos():
         subtitle='Por Subprefeitura',
         color='Zona',
         height=700,
-        labels= {'count': "Pontos Viciados"}
+        labels= {'count': "Pontos Viciados"},
+        text='Volume_int'
     )
     
     fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
@@ -162,6 +163,7 @@ def pontos():
     fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
 
     fig_bar.update_traces(textfont_size=16)
+    fig_hist.update_traces(textfont_size=16)
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
@@ -230,6 +232,9 @@ def residuos():
     )
 
     fig_bar_residuos.update_layout(yaxis={'categoryorder': 'total ascending'})
+
+    fig_line_residuos.update_traces(textfont_size=16)
+    fig_line_residuos.update_traces(textfont_size=16)
 
     st.plotly_chart(fig_bar_residuos, use_container_width=True)
     st.plotly_chart(fig_line_residuos, use_container_width=True)
