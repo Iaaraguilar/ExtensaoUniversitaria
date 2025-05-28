@@ -34,7 +34,11 @@ def pontos():
 
     total_pontos = df['Volume_int'].count()
 
-    metrica1, metrica2, metrica3, metrica4 = st.columns(4)
+    zona_com_mais_ponto = df.groupby('Zona')['Volume_int'].count()
+
+    zona_com_mais_volume = df.groupby('Zona')['Volume_int'].sum()
+
+    metrica1, metrica2, metrica3, metrica4, metrica5, metrica6 = st.columns(6)
 
     with metrica1:
         st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total) // 1000} Km³')
@@ -44,6 +48,10 @@ def pontos():
         st.metric('🏭 Empresa mais Contratada', value=empresa_mais_contratada)
     with metrica4:
         st.metric('🚏 Total de Pontos', value=total_pontos)
+    with metrica5:
+        st.metric('🚏 Total de Pontos', value=zona_com_mais_ponto)
+    with metrica6:
+        st.metric('🚏 Total de Pontos', value=zona_com_mais_volume)
 
 
     # Filtro de Ano
