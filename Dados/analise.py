@@ -50,7 +50,7 @@ def pontos():
     metrica4, metrica5, metrica6 = st.columns(3)
 
     with metrica1:
-        st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total) // 1000} Km³')
+        st.metric('🎚️ Volume Total de Lixo (m³)', value=f'{int(volume_total) // 1000} Km³')
     with metrica2:
         st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
