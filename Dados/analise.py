@@ -34,13 +34,16 @@ def pontos():
 
     total_pontos = df['Volume_int'].count()
 
-    list_zona_com_mais_ponto = df.groupby('Zona')['Volume_int'].count().sort_values(ascending=False)
+    dict_zona_com_mais_ponto = dict(df['Zona'].value_counts())
+    list_zona_com_mais_ponto = list(dict_zona_com_mais_ponto)
     zona_com_mais_ponto = list_zona_com_mais_ponto[0]
 
-    list_zona_com_mais_volume = df.groupby('Zona')['Volume_int'].sum().sort_values(ascending=False)
+    dict_zona_com_mais_volume = dict(df.groupby('Zona')['Volume_int'].sum().sort_values(ascending=False))
+    list_zona_com_mais_volume = list(dict_zona_com_mais_volume)
     zona_com_mais_volume = list_zona_com_mais_volume[0]
-
-    metrica1, metrica2, metrica3, metrica4, metrica5, metrica6 = st.columns(6)
+ 
+    metrica1, metrica2, metrica3 = st.columns(3)
+    metrica4, metrica5, metrica6 = st.columns(3)
 
     with metrica1:
         st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total) // 1000} Km³')
