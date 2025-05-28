@@ -29,8 +29,8 @@ def pontos():
     list_subprefeitura_count = list(dic_subprefeitura_count)
     subprefeitura_com_mais_pontos = list_subprefeitura_count[0]
 
-    dic_empresas_count = list(dict(df['Contratada'].value_counts()))
-    empresa_mais_contratada = dic_empresas_count[0]
+    # dic_empresas_count = list(dict(df['Contratada'].value_counts()))
+    # empresa_mais_contratada = dic_empresas_count[0]
 
     total_pontos = df['Volume_int'].count()
 
@@ -41,6 +41,10 @@ def pontos():
     dict_zona_com_mais_volume = dict(df.groupby('Zona')['Volume_int'].sum().sort_values(ascending=False))
     list_zona_com_mais_volume = list(dict_zona_com_mais_volume)
     zona_com_mais_volume = list_zona_com_mais_volume[0]
+
+    dict_subprefeitura_com_mais_volume = dict(df.groupby('Subprefeitura')['Volume_int'].sum().sort_values(ascending=False))
+    list_subprefeitura_com_mais_volume = list(dict_subprefeitura_com_mais_volume)
+    subprefeitura_com_mais_volume = list_subprefeitura_com_mais_volume[0]
  
     metrica1, metrica2, metrica3 = st.columns(3)
     metrica4, metrica5, metrica6 = st.columns(3)
@@ -50,7 +54,7 @@ def pontos():
     with metrica2:
         st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
-        st.metric('🏭 Empresa mais Contratada', value=empresa_mais_contratada)
+        st.metric('🏭 Empresa mais Contratada', value=subprefeitura_com_mais_volume)
     with metrica4:
         st.metric('🚏 Total de Pontos', value=total_pontos)
     with metrica5:
