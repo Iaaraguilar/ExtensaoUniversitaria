@@ -50,7 +50,7 @@ def pontos():
     metrica4, metrica5, metrica6 = st.columns(3)
 
     with metrica1:
-        st.metric('🎚️ Volume Total de Lixo (m³)', value=f'{int(volume_total)} m³')
+        st.metric('🎚️ Volume Total de Lixo (m³)', value=f'{int(volume_total) // 1000} Mil m³')
     with metrica2:
         st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
@@ -180,11 +180,11 @@ def residuos():
     metrica1, metrica2, metrica3 = st.columns(3)
 
     with metrica1:
-        st.metric('⚖️ Quantidade Total (toneladas)', value=f'{int(volume_total) // 1000000} Mt')
+        st.metric('⚖️ Quantidade Total (toneladas)', value=f'{int(volume_total) // 1000000} Milhões t')
     with metrica2:
-        st.metric('🛢️ Maior tipo de lixo', value=maiores_tipos)
+        st.metric('🛢️ Maior Tipo de Lixo', value=maiores_tipos)
     with metrica3:
-        st.metric('📅 Ano com mais resíduos', value=ano_maior)
+        st.metric('📅 Ano com Mais Resíduos', value=ano_maior)
 
     with st.sidebar:
         ano = st.sidebar.multiselect(
