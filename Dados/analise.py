@@ -134,6 +134,7 @@ def pontos():
         labels={
             'Volume_int': 'Volume (m³)'
         },
+        text='Volume_int'
     )
 
     fig_pie = px.pie(
@@ -160,9 +161,6 @@ def pontos():
     fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_pie.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
-
-    fig_bar.update_traces(textposition='outside')
-    fig_bar.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
