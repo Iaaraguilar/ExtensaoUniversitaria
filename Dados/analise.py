@@ -134,8 +134,7 @@ def pontos():
         labels={
             'Volume_int': 'Volume (m³)'
         },
-        text='Volume_int',
-        text_auto=True
+        text='Volume_int'
     )
 
     fig_pie = px.pie(
@@ -145,8 +144,7 @@ def pontos():
         title="Volume Total de Lixo",
         subtitle="Por Empresa",
         labels= {'Volume_int': "Volume (m³)", "Contratada": "Empresa"},
-        color= 'Contratada',
-        
+        color= 'Contratada'
     )
 
     fig_hist = px.histogram(
@@ -156,12 +154,14 @@ def pontos():
         subtitle='Por Subprefeitura',
         color='Zona',
         height=700,
-        labels= {'count': "Pontos Viciados"},
+        labels= {'count': "Pontos Viciados"}
     )
     
     fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_pie.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
+
+    fig_bar.update_layout(uniformtext_minsize=12)
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
