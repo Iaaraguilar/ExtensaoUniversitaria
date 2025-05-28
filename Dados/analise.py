@@ -54,9 +54,9 @@ def pontos():
     with metrica4:
         st.metric('🚏 Total de Pontos', value=total_pontos)
     with metrica5:
-        st.metric('📍 Zona com Mais Ponto', value=zona_com_mais_ponto)
+        st.metric('📍 Zona com Mais Pontos', value=zona_com_mais_ponto)
     with metrica6:
-        st.metric('🗺️ Zona com Mais Volume', value=zona_com_mais_volume)
+        st.metric('🗺️ Zona com Maior Volume', value=zona_com_mais_volume)
 
 
     # Filtro de Ano
