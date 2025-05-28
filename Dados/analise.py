@@ -32,7 +32,9 @@ def pontos():
     dic_empresas_count = list(dict(df['Contratada'].value_counts()))
     empresa_mais_contratada = dic_empresas_count[0]
 
-    metrica1, metrica2, metrica3 = st.columns(3)
+    total_pontos = df['Volume_int'].count()
+
+    metrica1, metrica2, metrica3, metrica4 = st.columns(4)
 
     with metrica1:
         st.metric('🎚️ Volume Total (m³)', value=f'{int(volume_total) // 1000} Km³')
@@ -40,6 +42,8 @@ def pontos():
         st.metric('🗾 Subprefeitura com Mais Pontos', value=f'{subprefeitura_com_mais_pontos}')
     with metrica3:
         st.metric('🏭 Empresa mais Contratada', value=empresa_mais_contratada)
+    with metrica4:
+        st.metric('🚏 Total de Pontos', value=total_pontos)
 
 
     # Filtro de Ano
