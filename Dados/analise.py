@@ -161,7 +161,7 @@ def pontos():
     fig_pie.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
 
-    fig_bar.update_traces(textfont_size=16)
+    # fig_bar.update_traces(textfont_size=16)
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
