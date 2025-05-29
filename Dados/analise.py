@@ -10,7 +10,6 @@ st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', la
 df = pd.read_excel('Dados/planilha_tratada_oficialmente_oficial.xlsx')
 df_residuo = pd.read_excel('Dados/residuos_unificado.xlsx')
 
-
 with st.sidebar:
     # Menu
     selecionado = option_menu(
@@ -155,15 +154,30 @@ def pontos():
         color='Zona',
         height=700,
         labels= {'count': "Pontos Viciados"},
-        text='Volume_int'
+        text_auto=True
     )
     
     fig_bar.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_pie.update_layout(yaxis={'categoryorder': 'total ascending'})
     fig_hist.update_layout(yaxis={'categoryorder': 'total ascending'})
 
-    fig_bar.update_traces(textfont_size=16)
-    fig_hist.update_traces(textfont_size=16)
+    fig_bar.update_traces(
+        textposition='outside',           
+        textfont_size=18,                
+        textfont_color='white',           
+    )
+    fig_bar.update_layout(
+        uniformtext_minsize=16                                           
+    )
+
+    fig_hist.update_traces(
+        textposition='outside',           
+        textfont_size=18,                
+        textfont_color='white',           
+    )
+    fig_hist.update_layout(
+        uniformtext_minsize=16                                           
+    )
 
     st.plotly_chart(fig_map, use_container_width=True)
     st.plotly_chart(fig_bar, use_container_width=True)
@@ -207,14 +221,15 @@ def residuos():
         x='quantidade',
         y='tipo',
         color='ano',
-        height=900,
+        height=800,
         title='Quantidade de Lixo',
+        barmode='relative',
         subtitle='Por Tipo',
         labels={
             'quantidade': 'Quantidade (t)',
             'tipo': 'Tipo de Residuo'
         },
-        
+        text='quantidade'
     )
     
     ordem_meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
@@ -228,13 +243,19 @@ def residuos():
         color='ano',
         title='Quantidade de Lixo',
         subtitle='Por Mês',
-        
+        text='quantidade'
     )
 
     fig_bar_residuos.update_layout(yaxis={'categoryorder': 'total ascending'})
 
-    fig_line_residuos.update_traces(textfont_size=16)
-    fig_line_residuos.update_traces(textfont_size=16)
+    fig_bar_residuos.update_traces(
+        textposition='outside',           
+        textfont_size=18,                
+        textfont_color='white',           
+    )
+    fig_bar_residuos.update_layout(
+        uniformtext_minsize=16                                           
+    )
 
     st.plotly_chart(fig_bar_residuos, use_container_width=True)
     st.plotly_chart(fig_line_residuos, use_container_width=True)
