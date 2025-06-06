@@ -16,7 +16,7 @@ with st.sidebar:
     # Menu
     selecionado = option_menu(
         menu_title='Menu',
-        options=['Pontos Viciados de Lixo', 'Tipos de Resíduos de Lixo', 'Saiba Mais'],
+        options=['Pontos Viciados de Lixo', 'Tipos de Resíduos de Lixo', 'Saiba Mais', 'QR Code'],
         default_index=0
     )
 
@@ -312,6 +312,7 @@ def saiba():
     </p>
     """, unsafe_allow_html=True)
 
+def qr_code():
     st.image("Dados/streamlit_qr_code.png", caption="Link Dashboard")
 
 def side_bar():
@@ -323,5 +324,8 @@ def side_bar():
 
     elif selecionado == 'Saiba Mais':
         saiba()
+
+    elif selecionado == 'QR Code':
+        qr_code()
     
 side_bar()
