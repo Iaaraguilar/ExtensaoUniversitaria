@@ -7,8 +7,10 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title='Dashboard do Limpa Brasil!', page_icon='🚮', layout='wide')
 
-df = pd.read_excel('Dados/planilha_tratada_oficialmente_oficial.xlsx')
-df_residuo = pd.read_excel('Dados/residuos_unificado.xlsx')
+# df = pd.read_excel('Dados/planilha_tratada_oficialmente_oficial.xlsx')
+# df_residuo = pd.read_excel('Dados/residuos_unificado.xlsx')
+df = pd.read_excel('planilha_tratada_oficialmente_oficial.xlsx')
+df_residuo = pd.read_excel('residuos_unificado.xlsx')
 
 with st.sidebar:
     # Menu
@@ -263,7 +265,8 @@ def residuos():
 
 def saiba():
 
-    with open("Dados/style.css") as f:
+    # with open("Dados/style.css") as f:
+    with open("style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     # Título e subtítulo
@@ -298,12 +301,13 @@ def saiba():
     
 
 
+   
+    <hr>""", unsafe_allow_html=True)
 
-    <hr>
+    st.image("Dados/streamlit_qr_code.png", caption="Link Dashboard")
 
-
-
-    <p class="rodape">
+    st.markdown(
+    """<p class="rodape">
     Desenvolvido por Davi, Gabryell, Gustavo, Iara e Julio. <br>
     © 2025 - Uso educativo.
     </p>
