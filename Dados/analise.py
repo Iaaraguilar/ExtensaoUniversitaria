@@ -301,17 +301,18 @@ def saiba():
     
 
 
-   
-    <hr>""", unsafe_allow_html=True)
 
-    st.image("Dados/streamlit_qr_code.png", caption="Link Dashboard")
+    <hr>
 
-    st.markdown(
-    """<p class="rodape">
+
+
+    <p class="rodape">
     Desenvolvido por Davi, Gabryell, Gustavo, Iara e Julio. <br>
     © 2025 - Uso educativo.
     </p>
     """, unsafe_allow_html=True)
+
+    st.image("Dados/streamlit_qr_code.png", caption="Link Dashboard")
 
 def side_bar():
     if selecionado == 'Pontos Viciados de Lixo':
